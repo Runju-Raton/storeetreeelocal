@@ -15,7 +15,7 @@ class FamilyTree extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'first_name', 'last_name', 'dob', 'relation_id', 'user_id', 'gender', 'connect_with', 'admin_id', 'parent_id', 'spouse_id',
+        'first_name', 'last_name', 'dob', 'user_id', 'gender', 'pid', 'mid','fid',
     ];
 
     public function user() {
@@ -65,5 +65,25 @@ class FamilyTree extends Model
         }
         
         return 'mother';
+    }
+    public function fatherInfo()
+    {
+        return $this->hasOne('App\Models\FamilyTree','id','fid');
+    }
+    public function motherInfo()
+    {
+        return $this->hasOne('App\Models\FamilyTree','id','mid');
+    }
+    public function partnerInfos()
+    {
+        return $this->hasMany('App\Models\FamilyTree','id','pid');
+    }
+    public function childInfosForFather()
+    {
+        return $this->hasMany('App\Models\FamilyTree','fid','id');
+    }
+    public function childInfosForMother()
+    {
+        return $this->hasMany('App\Models\FamilyTree','mid','id');
     }
 }
