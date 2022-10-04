@@ -124,7 +124,7 @@
                                         <div class="profile_col_1">
                                             <div class="profile_left_tittle_pr">Connected Period</div>
                                             <div class="profile_rt_con">
-                                                {{$userInfo->connected_period}}
+                                                {{Config::get('constants.CONNECTED_PERIODS')[$userInfo->connected_period]}}
                                             </div>
                                         </div>
                                     </li>
@@ -211,8 +211,8 @@
 
                                                     <select class="option-select" name="gender" required>
                                                        <option value="">--Select Gender--</option>
-                                                       <option value="Male" {{($userInfo->gender=='Male')?'selected':''}}>Male</option>
-                                                       <option value="Male" {{($userInfo->gender=='Female')?'selected':''}}>Female</option>
+                                                       <option value="Male" {{($userInfo->gender=='male')?'selected':''}}>Male</option>
+                                                       <option value="Male" {{($userInfo->gender=='female')?'selected':''}}>Female</option>
                                                        <option value="Other not identified here" {{($userInfo->gender=='Other not identified here')?'selected':''}}>Other not identified here</option>
                                                         <option value="Prefer not to answer" {{($userInfo->gender=='Prefer not to answer')?'selected':''}}>Prefer not to answer</option>
                                                    </select>
