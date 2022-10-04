@@ -62,8 +62,13 @@
 
                             // },
                             nodeMouseClick:FamilyTree.action.none,
-                            scaleInitial:FamilyTree.match.boundary,
-                            
+                            // scaleInitial:FamilyTree.match.boundary,
+                            showXScroll: FamilyTree.scroll.none,
+                            showYScroll: FamilyTree.scroll.none,
+                            mouseScroolBehaviour: FamilyTree.action.none,
+                            mouseDragBehaviour: FamilyTree.action.none,
+                            // scaleInitial:FamilyTree.match.width,
+                            zoom:false,
                         });
                     },
                     reArrangeData(){
