@@ -74,6 +74,10 @@ class FamilyTree extends Model
     {
         return $this->hasOne('App\Models\FamilyTree','id','mid');
     }
+    public function partnerInfo()
+    {
+        return $this->hasOne('App\Models\FamilyTree','id','pid');
+    }
     public function partnerInfos()
     {
         return $this->hasMany('App\Models\FamilyTree','id','pid');
