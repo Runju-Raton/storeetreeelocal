@@ -134,52 +134,56 @@ class RegisterController extends Controller
                     ];
 
 
-        $messages = [
-           'gender.required' => 'Gender is required',
-        ];
+                $messages = [
+                   'gender.required' => 'Gender is required',
+                ];
 
-        $this->validate($request, $rules, $messages);
-        
-        $input = $request->all();
-        $input['password'] = bcrypt($request->get('password'));
-        $input['dob'] =date_format(date_create( $request->get('dob')),'Y-m-d'); //Carbon::createFromFormat('m-d-Y', $request->get('dob'))->format('Y-m-d');
-        $input['status'] = 1;
-        $input['verified'] = 1;
-        $input['gender'] = strtolower($request->gender);
 
-        // dd($input);
+                // dd($request->all());
+                // $this->validate($request, $rules, $messages);
+               
+                $input = $request->all();
+                $input['password'] = bcrypt($request->get('password'));
+                $input['dob'] =date_format(date_create( $request->get('dob')),'Y-m-d'); //Carbon::createFromFormat('m-d-Y', $request->get('dob'))->format('Y-m-d');
+                $input['status'] = 1;
+                $input['verified'] = 1;
+                $input['gender'] = strtolower($request->gender);
 
-        $user = User::update($input);
-        
-        $relativeInfo=FamilyTree::where('user_id',$user->id)->first();
+                // dd($input);
+                $user_id=$user->id;
+                $user = $user->update($input);
 
-        $relativeInfo->first_name=$request->first_name;
+                 // dd($user_id);
+                
+                $relativeInfo=FamilyTree::where('user_id',$user_id)->first();
 
-        $relativeInfo->last_name=$request->last_name;
+                $relativeInfo->first_name=$request->first_name;
 
-        $relativeInfo->email=strtolower(trim($request->relation_email));
+                $relativeInfo->last_name=$request->last_name;
 
-        $relativeInfo->gender=strtolower($request->gender);
+                $relativeInfo->email=strtolower(trim($request->relation_email));
 
-        $relativeInfo->user_id=$user->id;
+                $relativeInfo->gender=strtolower($request->gender);
 
-        $relativeInfo->dob=date_format(date_create( $request->get('dob')),'Y-m-d');
+                $relativeInfo->user_id=$user_id;
 
-        $relativeInfo->status=1;
+                $relativeInfo->dob=date_format(date_create( $request->get('dob')),'Y-m-d');
 
-        $relativeInfo->created_at=Carbon::now();
+                $relativeInfo->status=1;
 
-        $flag=$relativeInfo->save();
-        
-        auth()->loginUsingId($user->id);
+                $relativeInfo->created_at=Carbon::now();
 
-        return response()->json(
-            [
-                'status' => 'success',
-                'user'   => $user,
-                'redirect' => Session::get('redirect') ? Session::get('redirect') : route('profile'),
-            ]
-        );
+                $flag=$relativeInfo->save();
+                
+                auth()->loginUsingId($user_id);
+
+                return response()->json(
+                    [
+                        'status' => 'success',
+                        'user'   => $user,
+                        'redirect' => Session::get('redirect') ? Session::get('redirect') : route('profile'),
+                    ]
+                );
             }
         }
     }
