@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'first_name', 'last_name', 'country_id', 'postal_code', 'dob', 'connected_period', 'email', 'password', 'email_verified_at', 'status', 'admin_id','gender'
+        'first_name', 'last_name', 'country_id', 'postal_code', 'dob', 'connected_period', 'email', 'password', 'email_verified_at', 'status', 'admin_id','gender','verified'
     ];
     
     public $sortable = ['id', 'first_name', 'last_name', 'email', 'created_at', 'updated_at', 'country_id', 'connected_period', 'dob', 'postal_code', 'status'];
