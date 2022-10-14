@@ -16,8 +16,8 @@
                 <div class="col-xs-12">
                     <div class="faq_top_section">
                         <h2>FREQUENTLY ASKED QUESTIONS</h2>
-                        <p>Thank you for your interest in the StoryTree Memory Maker. Below are some common We have run across. If you do not see the Question/answer you are looking for, definitely reach out to us directly with the link at the bottom of this page - we are happy to help.</p>
-                        <p>Dont see the answer of your question, click Here to contact us.</p>
+                        <p>Thank you for your interest in the StoreeTree Memory Maker. Below are some common questions we have run across. If you do not see the question/answer you are looking for, definitely reach out to us directly with the link at the bottom of this page - we are happy to help.</p>
+                        <p>Don&apos;t see the answer to your question, click <a href="https://storeetree.com/contact-us"><u>here</u></a> to contact us.</p>
                     </div>
                 </div>
             </div>
@@ -40,7 +40,7 @@
 			<div class="row">
                 <div class="col-xs-12">
                     <div class="faq_top_section">
-                        <p>Dont see the answer of your question, click <a href="https://storeetree.com/contact-us"><u>Here</u></a> to contact us.</p>
+                        <p>Don&apos;t see the answer to your question, click <a href="https://storeetree.com/contact-us"><u>here</u></a> to contact us.</p>
                     </div>
                 </div>
             </div>

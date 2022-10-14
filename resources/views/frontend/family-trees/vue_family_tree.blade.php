@@ -31,6 +31,8 @@
     }
 </style> -->
 
+
+
 <div class="banner_subpage" style="background-image:url( {{URL::to('/')}} /images/frontend/subpage_bg_1.jpg)">
     <h1>Family Tree</h1>
 </div>
@@ -184,8 +186,9 @@
         $("#first_name").val(dataInfo.first_name);
         $("#last_name").val(dataInfo.last_name);
         $("#relation_dob").val(dob);
+        $("#email_address").val(dataInfo.email);
         
-        if(dataInfo.gender=="Male"){
+        if(dataInfo.gender=="male"){
             // console.dir(dataInfo.gender);
             $("#gd_1").attr("checked","true");
             $("#gd_2").removeAttr("checked");

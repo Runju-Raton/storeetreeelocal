@@ -47,7 +47,7 @@
                         <div class="story_block">
                             <h2>View a Story</h2>
                             <ul>
-                                <li>See a family & friends tree - watch their stories</li>
+                                <li>See a family & friends tree</li>
                                 <li>Watch their stories</li>
                                 <li>Create your own story</li>
                             </ul>
@@ -68,7 +68,7 @@
                             <h2>About Us</h2>
                             <p>StoreeTree is an awesome step by step video platform to capture and share your amazing life memories
 and stories. We’re passionate about connecting families, friends and generations to come – your stories
-in your words, voice and tone. We believe heritage grounds up and at StoreeTree, MEMORIES LIVE
+in your words, voice and tone. We believe heritage grounds us and at StoreeTree, MEMORIES LIVE
 HERE! Join now and start sharing your story today.</p>
 
                             <div class="common_btn"><a href="{{ route('about-us') }}">Read More</a></div>
@@ -123,7 +123,7 @@ HERE! Join now and start sharing your story today.</p>
                                     <div class="testimonial_wrapper">
                                         <div class="testimonial_single">
                                             <div class="testimonial_content">
-                                                <p>Embrace the journey! Everyone wants to live at the top of the mountain, but all the fun and happiness is on thh climb!</p>
+                                                <p>Embrace the journey! Everyone wants to live at the top of the mountain, but all the fun and happiness is on the climb!</p>
                                             </div>
                                         </div>
                                     </div>

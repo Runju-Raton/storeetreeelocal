@@ -10,7 +10,7 @@
 
 @section('content')
 <div class="banner_subpage" style="background-image:url({{ URL::to('/') }}/images/frontend/subpage_bg_1.jpg)">
-    <h1>All Storoes</h1>
+    <h1>All Storees</h1>
 </div><!--subpage_banner-->
 
 <div class="video_content">

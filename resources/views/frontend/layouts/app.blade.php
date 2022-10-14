@@ -231,7 +231,7 @@
                                         </div><!--form-group-->
                                         <div class="form-group">
                                             <div class="cn_group">
-                                                <div class="cn_label">Most connected period to your Childhhod :</div>
+                                                <div class="cn_label">Most connected period to your Childhood :</div>
                                                 <div class="form_select_common select_common">
                                                     {!! Form::select('connected_period', [''=>'Which Decade?']+Config::get('constants.CONNECTED_PERIODS'), null, ['class'=>'option-select', 'id'=>'connected_period']) !!}
                                                 </div>

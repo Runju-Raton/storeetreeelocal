@@ -73,21 +73,21 @@
                             </div>
                             <div class="col-xs-12">
                                 <label>Card Number</label>
-                                <input type="text" class="form-control" name="cardNumber" value="{{ old('cardNumber') }}" placeholder="Enter Card Number">
+                                <input type="text" class="form-control" name="cardNumber" value="{{ old('cardNumber') }}" placeholder="Enter Card Number" maxlength="16" minlength="16">
                                 @error('cardNumber')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-xs-12 col-md-6 col-sm-6">
                                 <label>Card Validity</label>
-                                <input type="text" class="form-control" name="expiration" value="{{ old('expiration') }}" placeholder="MM/YYYY">
+                                <input type="text" class="form-control" name="expiration" value="{{ old('expiration') }}" placeholder="MM/YYYY" maxlength="7" minlength="7">
                                 @error('expiration')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="col-xs-12 col-md-6 col-sm-6">
                                 <label>CVC Number</label>
-                                <input type="text" class="form-control" name="cvv" value="{{ old('cvv') }}" placeholder="Enter CVC number">
+                                <input type="text" class="form-control" name="cvv" value="{{ old('cvv') }}" placeholder="Enter CVC number" minlength="3" maxlength="4">
                                 @error('cvv')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror

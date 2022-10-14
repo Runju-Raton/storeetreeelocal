@@ -74,7 +74,7 @@
                 <div class="col-xs-12">
                     <div class="pp_top_section">
                         <h2>START YOUR STORY NOW </h2>
-                        <p>Welcome - STEP ONE is to choose whiche Storee Package you would like</p>
+                        <p>Welcome - STEP ONE is to choose which StoreeTree Package you would like</p>
                     </div>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                 <div class="col-xs-12 col-sm-4 col-md-4">
                     <div class="plan_single_block">
                         <div class="priceblock_top">
-                            <h4>Lite</h4>
+                            <h4>Basic</h4>
                             <h2>$19.95</h2>
                             <h3>One Time</h3>
                         </div><!--priceblock_top-->
@@ -94,7 +94,7 @@
                             <ul>
                                 <li class="active">5 Questions</li>
                                 <li>Free "your decade" memories</li>
-                                <li>Unlimited Re-recording until you are happy with your videos</li>
+                                <li class="active">Unlimited Re-recording until you are happy with your videos</li>
                                 <li class="active">Free Family Tree Building</li>
                                 <li class="active">Unlimited Friend Connections</li>
                             </ul>
@@ -134,7 +134,7 @@
                 <div class="col-xs-12 col-sm-4 col-md-4">
                     <div class="plan_single_block">
                         <div class="priceblock_top">
-                            <h4>Premimum</h4>
+                            <h4>Premium</h4>
                             <h2>$29.95</h2>
                             <h3>One Time</h3>
                         </div><!--priceblock_top-->
@@ -175,6 +175,9 @@
 		$(window).on("load", function(){
         	$('input[name="plan"]').change(function(input){
             	$('button[type="submit"]')[0].click();
+            });
+            $('input[name="plan"]').click(function(input){
+                $('button[type="submit"]')[0].click();
             });
     	});
     </script>
