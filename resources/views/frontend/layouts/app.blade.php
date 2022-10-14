@@ -75,9 +75,9 @@ HERE! Join now and start sharing your story today.</p>
         <div class="wrapper">
             <div class="header">
                 <div class="header_bottom">
-                    <div class="container">
+                    <div class="container-fluid">
                         <div class="row">
-                            <div class="col-xs-10 col-xs-offset-1">
+                            <div class="col-xs-12">
                                 <div class="nav_section">
                                     <div class="navbar navbar-default navbar-static-top">
                                         <div class="navbar-header">
