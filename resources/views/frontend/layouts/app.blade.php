@@ -25,16 +25,59 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('css/frontend/custom.css') }}"/>
 
         @yield('header')
-
     </head>
     <body>
-        <div class="wrapper">
-            <div class="header">
+        <div class="modal fade modal-vcenter signIn_commonn" id="termsModal" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
 
-                <div class="header_bottom">
-                    <div class="container-fluid">
+                    <div class="modal-body">
                         <div class="row">
                             <div class="col-xs-12">
+                                <div class="modal_tittle">
+                                    <h2>Terms and condition</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <p>Thanks for checking us out. The idea for StoreeTree started 30 years ago when I took a VHS video camera to
+interview my 93 year old Grandmother. She lived an amazing life – born in Europe, fled with her
+husband and 18 month old son to the USA at the start of WWll to live the American Dream. And, with
+lots of hard work, they DID.</p>
+
+                            <p>She was a unique, spunky, great lady. I remember, every time I saw her I would first ask – how are you
+Grandma? She always answered the same: “Of course I am fine – I have a roof over my head, I eat 3
+meals a day, and the people I love, still remember me.”</p>
+                            <p>There is a beautiful simplicity to this. Something I could not pass down to my kids and future grandkids
+in my words – it needed to be her words, her voice and her facial expressions. So that day I recorded
+answers to my questions for future generations to enjoy.</p>
+
+                            <p>My dream to pass this opportunity of saving life memories to share with family friends and generations
+to come, fueled me to create StoreeTree.</p>
+                            <p>StoreeTree is an awesome step by step video platform to capture and share your amazing life memories
+and stories. We’re passionate about connecting families, friends and generations to come – your stories
+in your words, voice and tone. We believe heritage grounds us and at StoreeTree, MEMORIES LIVE
+HERE! Join now and start sharing your story today.</p>
+                             <p> That&apos;s my story!</p>
+                             <p>Glenn Schischa, Founder of StoreeTree </p>
+                            
+                            </div>
+                        </div>
+                       
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="wrapper">
+            <div class="header">
+                <div class="header_bottom">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-10 col-xs-offset-1">
                                 <div class="nav_section">
                                     <div class="navbar navbar-default navbar-static-top">
                                         <div class="navbar-header">
@@ -47,7 +90,9 @@
                                                 </a>
                                             </div>
                                             <div class="mobile_menu hidden-lg hidden-md"><a href="#" id="menu__opener"></a></div>
+                                            @if(Auth::user())
                                             <div class="view_link_mb hidden-lg hidden-md"><a href="{{ route('view-story') }}">View Story</a></div>
+                                            @endif
                                         </div>
 
                                         <div id="navbar" class="navbar-collapse collapse hideen_nav hidden-sm">
@@ -66,7 +111,9 @@
                                                 <li><a href="#" data-toggle="modal" data-target="#signin-modal">Login</a></li>
                                                 <li><a href="#" data-toggle="modal" data-target="#sign-up">Sign Up</a></li>
                                                 @endif
+                                                @if(Auth::user())
                                                 <li class="storee_link"><a href="{{ route('view-story') }}">View Story</a></li>
+                                                @endif
 
                                             </ul> 
                                         </div>   
@@ -172,7 +219,7 @@
             </div><!--sidebar_content-->
         </div><!--sidebar_content-->
 
-        <div class="modal fade modal-vcenter signIn_common" id="sign-up" role="dialog">
+        <div class="modal fade modal-vcenter signIn_common" id="sign-up" role="dialog" style="padding: 0 !important;">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
@@ -250,8 +297,9 @@
 
                                         <div class="form-group">
                                             <div class="av_check">
-                                                <input name="terms" id="ct1_3" type="checkbox" checked disabled="">
-                                                <label for="ct1_3">I Agree with <a href="#">Terms & Conditions</a>.</label>
+                                                <input name="terms" id="ct1_3" type="checkbox">
+                                                <label for="ct1_3">I Agree with <a href="#" data-toggle="modal" data-target="#termsModal" data-dismiss="modal">Terms & Conditions</a>.</label>
+                                                {{-- <a onclick="companyStoryModal()" href="#"    >Read More</a> --}}
                                             </div>
                                         </div><!--form-group-->
                                         <div class="form-group">
@@ -473,6 +521,12 @@
                 });
                 return false;
             }
+            jQuery('.modal').on('shown.bs.modal', function (e) {
+                jQuery("html").addClass("modal-open");
+            });
+            jQuery('.modal').on('hide.bs.modal', function (e) {
+                jQuery("html").removeClass("modal-open");
+            });
         </script>
         @yield('scripts')
     </body>

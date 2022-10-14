@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="blog_filter_section">
-                            <div class="pr_back_btn"><a href="{{ route('family-trees') }}">Back To Family Tree</a></div>
+                            {{-- <div class="pr_back_btn"></div> --}}
                             
                         </div><!--blog_filter_section-->
                     </div>
@@ -25,7 +25,14 @@
                     <div class="col-xs-12">
                         <div class="pr_tittle">Member Information :</div>
                         <div class="pr_row">
-                            <div class="pr_photo"><img src="{{ URL::to('/') }}/images/frontend/pr_photo.png" alt="" /></div><!--pr_photo-->
+                            <div class="d-flex">
+                                <div class="pr_photo" style="border-radius: 0; margin: 0;">
+                                    <img src="{{ URL::to('/') }}/images/frontend/{{ Auth::user()->gender=='male'?'photo_male.png':'photo_female.png'}}" alt="" style="border-radius: 50%;"/>
+                                </div>
+                                <div>
+                                     <button  style="float: right; border-radius: 60px;   border: 1px solid #133c7e; box-shadow: none;outline: 0;height: 48px;line-height: 48px;padding: 0px 30px 0px 30px;color: #fff;font-size: 18px;font-weight: 600; text-transform: uppercase;background-color: #133c7e;  margin-right0px;"><a href="{{ route('family-trees') }}" style="color: #fff;">Show Your Family</a></button>
+                                </div>
+                            </div><!--pr_photo-->
                         </div><!--pr_photo-->
                         <div class="profile_content_row" id="profileView">
                                 <ul>
