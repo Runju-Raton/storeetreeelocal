@@ -43,6 +43,7 @@ Route::group(['namespace' => 'Auth'], function() {
 
 Route::group(['namespace' => 'frontend'], function() {
 
+    Route::get('/family/member/{memberId}', 'HomeController@getMemberInfo')->name('member.info');
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('command', 'HomeController@command')->name('command');
     Route::get('/home', function () {
@@ -79,6 +80,9 @@ Route::group(['namespace' => 'frontend'], function() {
         Route::post('store.payment-process','PaymentController@handlePayment')->name('store.payment-process');
 
         Route::get('family-trees', 'FamilyTreeController@index')->name('family-trees');
+        Route::get('family-trees/get/connect/with', function(){
+            return view('frontend.family-trees.connect_with');
+        })->name('family-trees.get.connectWith');
         Route::post('family-trees', 'FamilyTreeController@store')->name('family-trees.store');
 
         Route::get('view-story', "ProfileController@previewStory")->name('view-story');

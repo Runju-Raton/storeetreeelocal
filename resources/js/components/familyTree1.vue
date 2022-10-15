@@ -41,6 +41,9 @@
                 },
 
                 methods: {
+                    callHandler:function(nodeId){
+                        console.dir(nodeId);
+                    },
                     mytree: function(domEl, x) {
                         this.family = new FamilyTree (domEl, {
                             nodes: x,
@@ -50,8 +53,12 @@
                                 field_1: "title",
                             },
                             enableSearch: false,
+                            // enableEditForm: false,
                             // nodeTreeMenu: true,
+                            
                             template: 'john',
+
+
                             // nodeContextMenu  :{
 
                             // },
@@ -61,15 +68,49 @@
                             // menu:{
 
                             // },
-                            nodeMouseClick:FamilyTree.action.none,
+                            // nodeMouseClick:FamilyTree.action.nodeMenu,
                             // scaleInitial:FamilyTree.match.boundary,
-                            showXScroll: FamilyTree.scroll.none,
-                            showYScroll: FamilyTree.scroll.none,
+                            showXScroll: FamilyTree.scroll.visible,
+                            showYScroll: FamilyTree.scroll.visible,
+                            mouseScrool: FamilyTree.action.ctrlZoom,
                             mouseScroolBehaviour: FamilyTree.action.none,
                             mouseDragBehaviour: FamilyTree.action.none,
                             // scaleInitial:FamilyTree.match.width,
-                            zoom:false,
+                            // zoom:false,
+                            // nodeMenuUI:,
+                            // nodeMenu: {
+                            //     onClick: this.callHandler
+                            // },
+                            nodeMenu: {
+                                
+                                call: {
+                                    icon: FamilyTree.icon.user(18, 18, '#039BE5'),
+                                    text: "View Profile",
+                                    onClick: this.callHandler
+                                }
+
+                            },
+
+                            editForm: {
+                            buttons: {
+                                user: {
+                                    icon: FamilyTree.icon.details(18,18,'#fff'),
+                                    text: 'Profile View'
+                                },
+                                edit: null,
+                                share: null,
+                                pdf: null,
+                                remove: null
+                            }
+                        },
                         });
+                        // this.family.on('init', function (sender) { sender.editUI.show(1, true); });
+                        this.family.editUI.on('button-click', function (sender, args) {
+                                if (args.name == 'user') {
+                                    window.open('/family/member/'+args.nodeId);
+                                }
+                            });
+
                     },
                     reArrangeData(){
                         // console.dir(this.datas);
