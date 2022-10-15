@@ -31,6 +31,8 @@
     }
 </style> -->
 
+
+
 <div class="banner_subpage" style="background-image:url( {{URL::to('/')}} /images/frontend/subpage_bg_1.jpg)">
     <h1>Family Tree</h1>
 </div>
@@ -108,19 +110,35 @@
                                 <div class="form-group">
                                     <input type="email" name="relation_email" placeholder="Email Address" id="email_address" class="form-control">
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <div class="form_select_common select_common">
                                         <select class="option-select" id="relation_id" name="relation_id">
                                             <option value="">Choose a Relation</option>
-                                           <!--  <option value="1">Self</option> -->
                                             <option value="2">Father</option>
                                             <option value="3">Mother</option>
                                             <option value="4">Partner</option>
                                             <option value="5">Son</option>
                                             <option value="6">Daughter</option>
+                                            <option value="6">Grand Father</option>
+                                            <option value="6">Grand MOther</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+
+                                <div class="form-group">
+                                    <div class="form_select_common select_common">
+                                        
+                                        <select class="option-select" id="relation_id" name="relation_id" required onchange="getConnectWith(this.value)">
+                                            <option value="">Choose a Relation</option>
+                                        @foreach(Config::get('constants.RELATIONS') as $key=>$relationInfo)
+                                            <option value="{{$key}}">{{$relationInfo}}</option>
+                                        @endforeach
                                         </select>
                                     </div>
                                 </div>
+
+                                <div id="connectWith" class="form-group "></div>
+                                
                                 <div class="form-group">
                                     <div class="label_tittle">Gender :</div>
                                     <div class="gn_block">
@@ -184,8 +202,9 @@
         $("#first_name").val(dataInfo.first_name);
         $("#last_name").val(dataInfo.last_name);
         $("#relation_dob").val(dob);
+        $("#email_address").val(dataInfo.email);
         
-        if(dataInfo.gender=="Male"){
+        if(dataInfo.gender=="male"){
             // console.dir(dataInfo.gender);
             $("#gd_1").attr("checked","true");
             $("#gd_2").removeAttr("checked");
@@ -207,8 +226,8 @@
             contentType: false,
             url: "{{ route('family-trees.store') }}",
             success: function (response) {
-                // console.dir(response);
-                location.reload();
+                console.dir(response);
+                // location.reload();
             },
             error: function (data) {
                 if (data.status == 422) {
@@ -223,6 +242,20 @@
         return false;
     }
 
+function getConnectWith(relation_id){
+
+    $.ajax({
+            type: "GET",
+            data: {relation_id:relation_id},
+            url: "{{ route('family-trees.get.connectWith') }}",
+            success: function (response) {
+                $("#connectWith").html(response);
+            },
+            error: function (data) {
+                
+            }
+        });
+}
     // $('#relation_id').chosen().change(function() {
     //     var relation_id = $('#relation_id').val();
     //     if(relation_id == 20) {
