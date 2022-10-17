@@ -55,12 +55,9 @@ class VideoParse
     {
         $files = Storage::disk('public')->files('audio');
         $family_tree = FamilyTree::with('user')->find(Auth::user()->id);
-        $connect_with = $family_tree->connect_with;
-
-        $audio_index = array_search("audio/".$connect_with.".mp3", $files);
-
+        $connected_period = $family_tree->user->connected_period;
+        $audio_index = array_search("audio/".$connected_period.".mp3", $files);
         $audio = Storage::disk('public')->path($files[$audio_index]);
-
         return $audio;
     }
 

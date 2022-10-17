@@ -222,7 +222,7 @@ HERE! Join now and start sharing your story today.</p>
         <div class="modal fade modal-vcenter signIn_common" id="sign-up" role="dialog" style="padding: 0 !important;">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                    <button type="button" class="close modalFormClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-xs-12">
@@ -246,7 +246,7 @@ HERE! Join now and start sharing your story today.</p>
 
                                         <div class="form-group">
                                             <div class="form_select_common select_common">
-                                                <select class="option-select" required name="gender">
+                                                <select class="option-select" name="gender">
                                                     <option value="">--Select Gender--</option>
                                                     <option value="Male">Male</option>
                                                     <option value="Female">Female</option>
@@ -303,7 +303,7 @@ HERE! Join now and start sharing your story today.</p>
                                             </div>
                                         </div><!--form-group-->
                                         <div class="form-group">
-                                            <input type="submit" class="btn btn-primary btn_signup" value="SIGN UP">
+                                            <input type="submit" class="btn btn-primary btn_signup modalFormClose" value="SIGN UP">
                                         </div><!--form-group-->
                                         {!! Form::close() !!}
                                     </div><!--end modal-left-->
@@ -313,7 +313,7 @@ HERE! Join now and start sharing your story today.</p>
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="mdl_footer">
-                                    <h3>Already have an account? <a href="#" data-toggle="modal" data-target="#signin-modal" data-dismiss="modal">Sign In</a></h3>
+                                    <h3>Already have an account? <a href="#" data-toggle="modal" data-target="#signin-modal" data-dismiss="modal" class="modalFormClose">Sign In</a></h3>
                                 </div>
                             </div>
                         </div>
@@ -331,7 +331,7 @@ HERE! Join now and start sharing your story today.</p>
         <div class="modal fade modal-vcenter signIn_common" id="signin-modal" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                    <button type="button" class="close modalFormClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
 
                     <div class="modal-body">
                         <div class="row">
@@ -348,16 +348,16 @@ HERE! Join now and start sharing your story today.</p>
                                         {!! Form::open(['method'=>'POST', 'action'=>'Auth\LoginController@login', 'onsubmit'=>'return checkLoginValid()', 'id' => 'loginForm']) !!}
 
                                         <div class="form-group">
-                                            {!! Form::text('email', null, ['class'=>'form-control', 'placeholder' => 'Email']) !!}
+                                            {!! Form::text('email', null, ['class'=>'form-control', 'placeholder' => 'Email', 'id'=>'email']) !!}
                                         </div><!--form-group-->
 
                                         <div class="form-group">
-                                            {!! Form::password('password', ['class'=>'form-control', 'placeholder' => 'Password']) !!}
+                                            {!! Form::password('password', ['class'=>'form-control', 'placeholder' => 'Password', 'id'=>'password']) !!}
                                         </div><!--form-group-->
 
                                         <div class="form-group">
                                             <div class="av_check">
-                                                <h4><a href="#" data-toggle="modal" data-target="#forgot-password" data-dismiss="modal">Forgot Password ?</a></h4>
+                                                <h4><a href="#" data-toggle="modal" data-target="#forgot-password" data-dismiss="modal" class="modalFormClose">Forgot Password ?</a></h4>
                                             </div>
                                         </div><!--form-group-->
                                         <div class="form-group">
@@ -372,7 +372,7 @@ HERE! Join now and start sharing your story today.</p>
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="mdl_footer">
-                                    <h3>Dont have an account? <a href="#" data-toggle="modal" data-target="#sign-up" data-dismiss="modal">Sign Up</a></h3>
+                                    <h3>Dont have an account? <a href="#" data-toggle="modal" data-target="#sign-up" data-dismiss="modal" class="modalFormClose">Sign Up</a></h3>
                                 </div>
                             </div>
                         </div>
@@ -411,19 +411,19 @@ HERE! Join now and start sharing your story today.</p>
                                             </div><!--form-group-->                                           
 
                                             <div class="form-group">
-                                                <input type="submit" class="btn btn-primary btn_signup" value="EMAIL RESET LINK">
+                                                <input type="button" class="btn btn-primary btn_signup" value="EMAIL RESET LINK">
                                             </div><!--form-group-->
 
                                             {!! Form::close() !!}
-                                            <div class="or">OR Login With</div>
+                                            {{-- <div class="or">OR Login With</div> --}}
                                     </div><!--end modal-left-->
 
-                                    <div class="modal-social_login">
+                                    {{-- <div class="modal-social_login">
                                         <ul>
                                             <li><a href="#"><img src="{{ URL::to('/') }}/images/frontend/sn_fb.png" alt="" /></a></li>
                                             <li><a href="#"><img src="{{ URL::to('/') }}/images/frontend/cn_google.png" alt="" /></a></li>
                                         </ul>
-                                    </div><!--end social_login-->
+                                    </div><!--end social_login--> --}}
                                 </div>
 
                             </div>
@@ -432,7 +432,7 @@ HERE! Join now and start sharing your story today.</p>
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="mdl_footer">
-                                    <h3>Not Registered <a href="#" data-toggle="modal" data-target="#sign-up" data-dismiss="modal">Create a new account</a></h3>
+                                    <h3>Not Registered <a href="#" data-toggle="modal" data-target="#sign-up" data-dismiss="modal" class="modalFormClose">Create a new account</a></h3>
                                 </div>
                             </div>
                         </div>
@@ -460,7 +460,17 @@ HERE! Join now and start sharing your story today.</p>
         <script type="text/javascript">
             $('#dob').datepicker({
                 autoclose: true,
-                format: 'mm/dd/yyyy'
+                format: 'mm/dd/yyyy',
+                keyBinds: {
+                    enter: function(){
+                        alert('123')
+                        if(this.date() === null) {
+                            this.date(moment());    // moment() is similar to new Date()
+                        }
+                        this.hide();
+                    }
+                },
+                useCurrent: false
             });
 
             function checkRegistrationValid() {
@@ -480,6 +490,7 @@ HERE! Join now and start sharing your story today.</p>
                         $('.form-group span.error').remove();
                         if (data.status == 422) {
                             var errors = data.responseJSON;
+                            console.log(errors.errors)
                             $.each(errors.errors, function (i, error) {
                                 var el = $(document).find('[name="' + i + '"]');
                                 el.after($('<span class="error" style="color: red;">' + error[0] + '</span>'));
@@ -512,9 +523,10 @@ HERE! Join now and start sharing your story today.</p>
                         $('.form-group span.error').remove();
                         if (data.status == 422) {
                             var errors = data.responseJSON;
+                            console.log(errors.errors)
                             $.each(errors.errors, function (i, error) {
                                 var el = $(document).find('[name="' + i + '"]');
-                                el.after($('<span style="color: red;">' + error[0] + '</span>'));
+                                el.after($('<span class="error" style="color: red;">' + error[0] + '</span>'));
                             });
                         }
                     }
@@ -527,6 +539,15 @@ HERE! Join now and start sharing your story today.</p>
             jQuery('.modal').on('hide.bs.modal', function (e) {
                 jQuery("html").removeClass("modal-open");
             });
+            $('.modalFormClose').on('click',function(){
+                $('.error').remove();
+                $('body').attr('style','padding-right: 0 !important;');
+                $('#email').val('')
+                $('#password').val('')
+            });
+            // $("#dob").datetimepicker({
+                
+            // });
         </script>
         @yield('scripts')
     </body>

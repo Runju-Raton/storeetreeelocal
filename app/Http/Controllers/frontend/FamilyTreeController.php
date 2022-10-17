@@ -2181,7 +2181,7 @@ class FamilyTreeController extends BaseController
                   
                   $newUser=$this->addAsNewUser($request,$daughterInfo);
 
-                  if($newUser!=false)) {
+                  if($newUser!=false) {
                    
                     $newFamilyTree=$this->addAsNewFamilyTree($request,$newUser);
 
@@ -2274,7 +2274,7 @@ class FamilyTreeController extends BaseController
                   
                   $newUser=$this->addAsNewUser($request,$sonInfo);
 
-                  if($newUser!=false)) {
+                  if($newUser!=false) {
                    
                     $newFamilyTree=$this->addAsNewFamilyTree($request,$newUser);
 
@@ -2365,7 +2365,7 @@ class FamilyTreeController extends BaseController
             
               $newUser=$this->addAsNewUser($request,$childInfo);
 
-              if($newUser!=false)) {
+              if($newUser!=false) {
                
                 $newFamilyTree=$this->addAsNewFamilyTree($request,$newUser);
 
@@ -2442,7 +2442,7 @@ class FamilyTreeController extends BaseController
             
               $newUser=$this->addAsNewUser($request,$childInfo);
 
-              if($newUser!=false)) {
+              if($newUser!=false) {
                
                 $newFamilyTree=$this->addAsNewFamilyTree($request,$newUser);
 

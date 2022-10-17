@@ -90,11 +90,11 @@
                                 {!! Form::open(['method'=>'POST', 'action'=>'frontend\FamilyTreeController@store', 'onsubmit'=>'return checkRelationValid()', 'id' => 'relationForm']) !!}
                                 <div class="form-group">
                                     <div class="form_select_common select_common">
-                                        <select class="option-select" name="aa" onchange="setMemberInfo(this.value)">
+                                        <select class="option-select" name="aa" >
                                             <option  value="">Choose Member From Existing User</option>
                                         @php($userList=App\Models\User::orderBy('id','asc')->get())
                                             @foreach($userList as $key=>$userInfo)
-                                                <option  value="{{$userInfo}}" >{{$userInfo->first_name.' '.$userInfo->last_name}}</option>
+                                                <option  value="{{$userInfo->id}}" >{{$userInfo->first_name.' '.$userInfo->last_name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -128,7 +128,7 @@
                                 <div class="form-group">
                                     <div class="form_select_common select_common">
                                         
-                                        <select class="option-select" id="relation_id" name="relation_id" required onchange="getConnectWith(this.value)">
+                                        <select class="option-select" id="relation_id" name="relation_id"  onchange="getConnectWith(this.value)">
                                             <option value="">Choose a Relation</option>
                                         @foreach(Config::get('constants.RELATIONS') as $key=>$relationInfo)
                                             <option value="{{$key}}">{{$relationInfo}}</option>
@@ -218,7 +218,7 @@
     }
     function checkRelationValid() {
         var form_data = new FormData($("#relationForm")[0]);
-        $('.form-group span').remove();
+        // $('.form-group span').remove();
         $.ajax({
             type: "POST",
             data: form_data,
@@ -226,8 +226,8 @@
             contentType: false,
             url: "{{ route('family-trees.store') }}",
             success: function (response) {
-                console.dir(response);
-                // location.reload();
+                
+                location.reload();
             },
             error: function (data) {
                 if (data.status == 422) {
