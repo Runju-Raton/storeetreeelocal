@@ -3579,3 +3579,11 @@ right connector from last child*/
     /*.deliver_order_process_dop ul li::before{ content: '';left: -130px; top: 38px; width: 220px; }*/
 
 }
+
+.ui-state-default, .ui-widget-content .ui-state-default{
+    color: #222222;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active{
+    color: #23527c !important;
+}

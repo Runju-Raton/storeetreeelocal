@@ -10,13 +10,13 @@
 
         @yield('title')
         <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.png')}}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/frontend/bootstrap.min.css') }}"/>
         <link rel="stylesheet" type="text/css" href="{{ asset('css/frontend/owl.carousel.css') }}"/>
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/backend/plugins/datepicker/datepicker3.css') }}"/>
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/backend/plugins/timepicker/bootstrap-timepicker.min.css') }}"/>
         <link rel="stylesheet" type="text/css" href="{{ asset('css/frontend/chosen.css') }}"/>
         <link rel="stylesheet" type="text/css" href="{{ asset('css/frontend/jquery-ui.css') }}"/>
         <link rel="stylesheet" type="text/css" href="{{ asset('css/frontend/jquery.mCustomScrollbar.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/backend/plugins/datepicker/datepicker3.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/backend/plugins/timepicker/bootstrap-timepicker.min.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/frontend/bootstrap.min.css') }}"/>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -246,7 +246,7 @@ HERE! Join now and start sharing your story today.</p>
 
                                         <div class="form-group">
                                             <div class="form_select_common select_common">
-                                                <select class="option-select" name="gender">
+                                                <select class="option-select" name="gender" id="gender">
                                                     <option value="">--Select Gender--</option>
                                                     <option value="Male">Male</option>
                                                     <option value="Female">Female</option>
@@ -274,7 +274,7 @@ HERE! Join now and start sharing your story today.</p>
                                             {!! Form::text('postal_code', null, ['class'=>'form-control', 'placeholder' => 'Zip code / Postal Code']) !!}
                                         </div><!--form-group-->
                                         <div class="form-group bootstrap-timepicker">
-                                            {!! Form::text('dob', null, ['class'=>'form-control dob_input', 'id' => 'dob', 'placeholder' => 'Date Of Birth (MM/DD/YYYY)', 'autocomplete' => 'off']) !!}
+                                            {!! Form::text('dob', null, ['class'=>'datepicker form-control dob_input', 'id' => 'dob', 'placeholder' => 'Date Of Birth (MM/DD/YYYY)', 'autocomplete' => 'off']) !!}
                                         </div><!--form-group-->
                                         <div class="form-group">
                                             <div class="cn_group">
@@ -407,7 +407,7 @@ HERE! Join now and start sharing your story today.</p>
                                     <div class="modal-form">
                                         <form action="#" method="post">                                            
                                             <div class="form-group">
-                                                {!! Form::text('email', null, ['class'=>'form-control', 'placeholder' => 'Email']) !!}
+                                                {!! Form::text('email', null, ['class'=>'form-control', 'placeholder' => 'Email', 'id'=>'eemail']) !!}
                                             </div><!--form-group-->                                           
 
                                             <div class="form-group">
@@ -446,11 +446,11 @@ HERE! Join now and start sharing your story today.</p>
 
         @include('sweetalert::alert')
         <script type="text/javascript" src="{{ asset('js/frontend/jquery.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('js/frontend/bootstrap.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/frontend/jquery-ui.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/frontend/owl.carousel.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/frontend/chosen.jquery.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/backend/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/frontend/bootstrap.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/backend/plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/frontend/grids.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/frontend/masonry.pkgd.js') }}"></script>
@@ -458,19 +458,19 @@ HERE! Join now and start sharing your story today.</p>
         <script type="text/javascript" src="{{ asset('js/frontend/slick.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/frontend/custom.js') }}"></script>
         <script type="text/javascript">
+         // prevent form submit hitting enter
+            $(document).ready(function() {
+                $(window).keydown(function(event){
+                    if(event.keyCode == 13) {
+                    event.preventDefault();
+                    return false;
+                    }
+                });
+            });
+            var datepicker = $.fn.datepicker.noConflict(); 
             $('#dob').datepicker({
                 autoclose: true,
-                format: 'mm/dd/yyyy',
-                keyBinds: {
-                    enter: function(){
-                        alert('123')
-                        if(this.date() === null) {
-                            this.date(moment());    // moment() is similar to new Date()
-                        }
-                        this.hide();
-                    }
-                },
-                useCurrent: false
+                format: 'mm/dd/yyyy'
             });
 
             function checkRegistrationValid() {
@@ -543,7 +543,12 @@ HERE! Join now and start sharing your story today.</p>
                 $('.error').remove();
                 $('body').attr('style','padding-right: 0 !important;');
                 $('#email').val('')
+                $('#eemail').val('')
                 $('#password').val('')
+                $("#registrationForm")[0].reset();
+                $('#country_id_chosen .chosen-single span').text('Choose a Country')
+                $('#connected_period_chosen .chosen-single span').text('Which Decade?')
+                $('#gender_chosen .chosen-single span').text('--Select Gender--')
             });
             // $("#dob").datetimepicker({
                 

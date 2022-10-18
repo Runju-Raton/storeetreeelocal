@@ -74,7 +74,7 @@
 <div class="modal fade modal-vcenter member_plus" id="new_member_pp" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+            <button type="button" class="close modalFormClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-xs-12">
@@ -90,11 +90,11 @@
                                 {!! Form::open(['method'=>'POST', 'action'=>'frontend\FamilyTreeController@store', 'onsubmit'=>'return checkRelationValid()', 'id' => 'relationForm']) !!}
                                 <div class="form-group">
                                     <div class="form_select_common select_common">
-                                        <select class="option-select" name="aa" >
+                                        <select class="option-select" name="aa" onchange="setMemberInfo(this.value)" id="selectedUser">
                                             <option  value="">Choose Member From Existing User</option>
                                         @php($userList=App\Models\User::orderBy('id','asc')->get())
                                             @foreach($userList as $key=>$userInfo)
-                                                <option  value="{{$userInfo->id}}" >{{$userInfo->first_name.' '.$userInfo->last_name}}</option>
+                                                <option  value="{{$userInfo}}" >{{$userInfo->first_name.' '.$userInfo->last_name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -156,8 +156,7 @@
                                 
 
                                 <div class="form-group">
-                                    <input type="text" name="relation_dob" class="form-control dob_input" id="relation_dob" placeholder="Date Of Birth (MM/DD/YYYY)" autocomplete="off">
-                                    
+                                    <input type="text" name="relation_dob" class="datepicker form-control dob_input" id="relation_dob" placeholder="Date Of Birth (MM/DD/YYYY)" autocomplete="off" data-provide="datepicker">
                                 </div>
                                 
 
@@ -169,7 +168,7 @@
                                             <div class="modal_confirm_btn"><button type="submit" class="btn_member">Add Member</button></div>
                                         </div>
                                         <div class="col-xs-6 col-sm-6 col-md-6">
-                                            <div class="modal_cancel_btn"><a href="#" data-dismiss="modal" aria-label="Close">Cancel</a></div>
+                                            <div class="modal_cancel_btn modalFormClose"><a href="#" data-dismiss="modal" aria-label="Close">Cancel</a></div>
                                         </div>
                                     </div>
                                 </div>
@@ -190,6 +189,17 @@
 
   <script src="{{ asset('js/app.js') }}"></script>
 <script type="text/javascript">
+    // prevent form submit hitting enter
+    $(document).ready(function() {
+        $(window).keydown(function(event){
+            if(event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+            }
+        });
+    });
+
+var datepicker = $.fn.datepicker.noConflict(); 
     $('#relation_dob').datepicker({
         autoclose: true,
         format: 'mm/dd/yyyy'
@@ -217,6 +227,7 @@
 
     }
     function checkRelationValid() {
+        $('.form-group span.error').remove();
         var form_data = new FormData($("#relationForm")[0]);
         // $('.form-group span').remove();
         $.ajax({
@@ -227,14 +238,14 @@
             url: "{{ route('family-trees.store') }}",
             success: function (response) {
                 
-                location.reload();
+                // location.reload();
             },
             error: function (data) {
                 if (data.status == 422) {
                     var errors = data.responseJSON;
                     $.each(errors.errors, function (i, error) {
                         var el = $(document).find('[name="' + i + '"]');
-                        el.after($('<span style="color: red;">' + error[0] + '</span>'));
+                        el.after($('<span class="error" style="color: red;">' + error[0] + '</span>'));
                     });
                 }
             }
@@ -280,5 +291,11 @@ function getConnectWith(relation_id){
     //         $('.parent_id').addClass('hidden');
     //     }
     // });
+    $('.modalFormClose').on('click',function(){
+        $('.error').remove();
+        $("#relationForm")[0].reset();
+        $('#selectedUser_chosen .chosen-single span').text('Choose Member From Existing User')
+        $('#relation_id_chosen .chosen-single span').text('Choose a Relation')
+    });
 </script>
 @endsection
