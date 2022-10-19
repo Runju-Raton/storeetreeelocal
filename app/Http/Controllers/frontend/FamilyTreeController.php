@@ -21,40 +21,8 @@ class FamilyTreeController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function processData($dataInfo)
-    {
-        $data=[
-                    'id'=>$dataInfo->id,
-                    'name'=>$dataInfo->first_name.' '.$dataInfo->last_name,
-                    'gender'=>$dataInfo->gender,
-                    'img'=>($dataInfo->gender=='male') ? URL::to('/').'/images/frontend/photo_man.png':URL::to('/').'/images/frontend/photo_female.png',
-                ];
-
-                (!is_null($dataInfo->pid)) ? $data['pids']=[$dataInfo->pid]:'';
-                (!is_null($dataInfo->fid)) ? $data['fid']=$dataInfo->fid:'';
-                (!is_null($dataInfo->mid)) ? $data['mid']=$dataInfo->mid:'';
-
-        return $data;
-    }
-    public function index(Request $request)
-    {
-        $datas=[];
-
-        $currentUser=FamilyTree::where('user_id',auth()->user()->id)->first();
-
-        if(!empty($currentUser)) {
-              $data=$this->processData()
-            array_push($datas, $data);
-
-            
-        }
-
-
-       return view('frontend.family-trees.vue_family_tree',compact(['datas']));
-    }
-    public function oldIndex(Request $request) {
-       
-       /* // $user = auth()->user();
+    public function index(Request $request) {
+        // $user = auth()->user();
         // $family_trees = FamilyTree::where('user_id', $user->id)->orderBy('relation_id', 'ASC')->get();
         // $paternal_grand_parents = [];
         // $paternal_grand_parents_in_laws = [];
@@ -528,7 +496,6 @@ class FamilyTreeController extends BaseController
         }
 
         return view('frontend.family-trees.vue_family_tree',compact(['datas']));
-        */
     }
     
     /**
@@ -549,7 +516,7 @@ class FamilyTreeController extends BaseController
                     'relation_id'     => 'required',
                     'relation_dob'  => 'required',
                     'gender' => 'required',
-                   
+                    'relation_email' => 'required',
                 ];
 
                 $messages = [
@@ -989,7 +956,7 @@ class FamilyTreeController extends BaseController
 
             $relativeInfo->last_name=$request->last_name;
 
-            $relativeInfo->email=$newUser->email;//strtolower(trim($request->relation_email));
+            $relativeInfo->email=strtolower(trim($request->relation_email));
 
             $relativeInfo->gender=$request->gender;
 
@@ -1012,11 +979,6 @@ class FamilyTreeController extends BaseController
     }
     public function addAsNewUser($request,$relatedUser)
     {
-        if(isset($request->relation_email) && is_null($request->relation_email))
-            $relation_email=strtolower(trim($request->relation_email));
-        else
-            $relation_email=substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789'), 0,10).'@storeetree.com';
-
         $isUserExist=User::where('email',strtolower(trim($request->relation_email)))->first();
 
         if (empty($isUserExist)) {
@@ -1027,7 +989,7 @@ class FamilyTreeController extends BaseController
 
             $userInfo->last_name=$request->last_name;
 
-            $userInfo->email=$relation_email;//strtolower(trim($request->relation_email));
+            $userInfo->email=strtolower(trim($request->relation_email));
 
             $userInfo->gender=$request->gender;
 
@@ -1081,15 +1043,11 @@ class FamilyTreeController extends BaseController
 
                         $parentalGrandFatherInfo=$this->isFamilyTreeExist($request);
 
-                        if($parentalGrandFatherInfo!=false){
+                        if(!$parentalGrandFatherInfo){
 
                             $fatherInfo->fid=$parentalGrandFatherInfo->id;
 
                             if($fatherInfo->save()){
-
-                                if(!is_null($fatherInfo->mid))
-                                    $this->connectPartner($fatherInfo->fid,$fatherInfo->mid);
-
                                 return [
                                         'errMsgFlag'=>false,
                                         'msgFlag'=>true,
@@ -1108,18 +1066,15 @@ class FamilyTreeController extends BaseController
                             
                             $newUser=$this->addAsNewUser($request,$fatherInfo);
 
-                            if($newUser!=false){
+                            if(!$newUser){
                                 
                                 $newFamilyTree=$this->addAsNewFamilyTree($request,$newUser);
 
-                                if($newFamilyTree!=false){
+                                if(!$newFamilyTree){
 
                                     $fatherInfo->fid=$newFamilyTree->id;
 
                                     if($fatherInfo->save()){
-
-                                        if(!is_null($fatherInfo->mid))
-                                            $this->connectPartner($fatherInfo->fid,$fatherInfo->mid);
 
                                         return [
                                             'errMsgFlag'=>false,
@@ -1206,15 +1161,11 @@ class FamilyTreeController extends BaseController
 
                         $parentalGrandMotherInfo=$this->isFamilyTreeExist($request);
 
-                        if($parentalGrandMotherInfo!=false){
+                        if(!$parentalGrandMotherInfo){
 
                             $fatherInfo->mid=$parentalGrandMotherInfo->id;
 
                             if($fatherInfo->save()){
-
-                                if(!is_null($fatherInfo->fid))
-                                    $this->connectPartner($fatherInfo->fid,$fatherInfo->mid);
-
                                 return [
                                         'errMsgFlag'=>false,
                                         'msgFlag'=>true,
@@ -1233,18 +1184,15 @@ class FamilyTreeController extends BaseController
                             
                             $newUser=$this->addAsNewUser($request,$fatherInfo);
 
-                            if($newUser!=false){
+                            if(!$newUser){
                                 
                                 $newFamilyTree=$this->addAsNewFamilyTree($request,$newUser);
 
-                                if($newFamilyTree!=false){
+                                if(!$newFamilyTree){
 
                                     $fatherInfo->mid=$newFamilyTree->id;
 
                                     if($fatherInfo->save()){
-
-                                        if(!is_null($fatherInfo->fid))
-                                            $this->connectPartner($fatherInfo->fid,$fatherInfo->mid);
 
                                         return [
                                             'errMsgFlag'=>false,
@@ -1335,10 +1283,6 @@ class FamilyTreeController extends BaseController
                             $motherInfo->fid=$maternalGrandFatherInfo->id;
 
                             if($fatherInfo->save()){
-
-                                if(!is_null($motherInfo->mid))
-                                    $this->connectPartner($motherInfo->fid,$motherInfo->mid);
-
                                 return [
                                         'errMsgFlag'=>false,
                                         'msgFlag'=>true,
@@ -1355,7 +1299,7 @@ class FamilyTreeController extends BaseController
                         }
                         else{
                             
-                            $newUser=$this->addAsNewUser($request,$myFamilyTree);
+                            $newUser=$this->addAsNewUser($request,$fatherInfo);
 
                             if($newUser!=false){
                                 
@@ -1366,9 +1310,6 @@ class FamilyTreeController extends BaseController
                                     $motherInfo->fid=$newFamilyTree->id;
 
                                     if($motherInfo->save()){
-
-                                        if(!is_null($motherInfo->mid))
-                                            $this->connectPartner($motherInfo->fid,$motherInfo->mid);
 
                                         return [
                                             'errMsgFlag'=>false,
@@ -1460,10 +1401,6 @@ class FamilyTreeController extends BaseController
                             $motherInfo->mid=$maternalGrandMotherInfo->id;
 
                             if($motherInfo->save()){
-
-                                if(!is_null($motherInfo->fid))
-                                    $this->connectPartner($motherInfo->fid,$motherInfo->mid);
-
                                 return [
                                         'errMsgFlag'=>false,
                                         'msgFlag'=>true,
@@ -1480,7 +1417,7 @@ class FamilyTreeController extends BaseController
                         }
                         else{
                             
-                            $newUser=$this->addAsNewUser($request,$myFamilyTree);
+                            $newUser=$this->addAsNewUser($request,$fatherInfo);
 
                             if($newUser!=false){
                                 
@@ -1490,10 +1427,7 @@ class FamilyTreeController extends BaseController
 
                                     $motherInfo->mid=$newFamilyTree->id;
 
-                                    if($motherInfo->save()){
-
-                                        if(!is_null($motherInfo->fid))
-                                            $this->connectPartner($motherInfo->fid,$motherInfo->mid);
+                                    if($fatherInfo->save()){
 
                                         return [
                                             'errMsgFlag'=>false,
@@ -1584,9 +1518,6 @@ class FamilyTreeController extends BaseController
 
                         if($myFamilyTree->save()){
 
-                            if(!is_null($myFamilyTree->mid))
-                                $this->connectPartner($fatherInfo->id,$myFamilyTree->mid);
-
                              return [
                                 'errMsgFlag'=>false,
                                 'msgFlag'=>true,
@@ -1658,9 +1589,6 @@ class FamilyTreeController extends BaseController
 
                         if($myFamilyTree->save()){
 
-                            if(!is_null($myFamilyTree->fid))
-                                $this->connectPartner($myFamilyTree->fid,$motherInfo->id);
-
                              return [
                                 'errMsgFlag'=>false,
                                 'msgFlag'=>true,
@@ -1731,7 +1659,7 @@ class FamilyTreeController extends BaseController
                         $myFamilyTree->pid=$partnerInfo->id;
 
                         if($myFamilyTree->save()){
-                            $this->connectPartner($myFamilyTree->id,$partnerInfo->id);
+
                              return [
                                 'errMsgFlag'=>false,
                                 'msgFlag'=>true,
@@ -1809,9 +1737,6 @@ class FamilyTreeController extends BaseController
 
                                 if($partnerInfo->save()){
 
-                                    if(!is_null($partnerInfo->mid))
-                                        $this->connectPartner($partnerInfo->fid,$partnerInfo->mid);
-
                                      return [
                                         'errMsgFlag'=>false,
                                         'msgFlag'=>true,
@@ -1877,222 +1802,6 @@ class FamilyTreeController extends BaseController
             ];
         }
     }
-    public function AddPaternalGrandFatherInLaw($request)
-    {
-        $currentUser=auth()->user();
-
-        $myFamilyTree=FamilyTree::where('user_id',$currentUser->id)->first();
-
-        if(!empty($myFamilyTree)) {
-
-            if(!is_null($myFamilyTree->pid)){
-                
-                $partnerInfo=FamilyTree::find($myFamilyTree->pid);
-
-                if(!empty($partnerInfo)) {
-
-                    if(!is_null($partnerInfo->fid)){
-                        
-                        $partnerFatherInfo=FamilyTree::find($partnerInfo->fid);
-
-                        if (!empty($partnerFatherInfo)) {
-                        
-                                $newUser=$this->addAsNewUser($request,$partnerFatherInfo);
-
-                                if ($newUser!=false) {
-                                    
-                                    $parentalGrandFatherInLawInfo=$this->addAsNewFamilyTree($request,$newUser);
-
-                                    if ($parentalGrandFatherInLawInfo!=false) {
-
-                                        $partnerFatherInfo->fid=$parentalGrandFatherInLawInfo->id;
-
-                                        if($partnerFatherInfo->save()){
-
-                                            if(!is_null($partnerFatherInfo->mid))
-                                                $this->connectPartner($partnerFatherInfo->fid,$partnerFatherInfo->mid);
-
-                                             return [
-                                                'errMsgFlag'=>false,
-                                                'msgFlag'=>true,
-                                                'msg'=>'Father In Law info Added Successfully.',
-                                            ];
-                                        }
-                                        else{
-                                             return [
-                                                'errMsgFlag'=>true,
-                                                'msgFlag'=>false,
-                                                'msg'=>'Failed To Add Father In Law',
-                                            ];
-                                        }
-                                    }
-                                    else{
-                                         return [
-                                            'errMsgFlag'=>true,
-                                            'msgFlag'=>false,
-                                            'msg'=>'Failed To Add Father In Law',
-                                        ];
-                                    }
-
-                                }
-                                else{
-                                    return [
-                                        'errMsgFlag'=>true,
-                                        'msgFlag'=>false,
-                                        'msg'=>'You have already added your Father In Law',
-                                    ];
-                                }
-
-                        }
-                        else{
-                            return [
-                                'errMsgFlag'=>true,
-                                'msgFlag'=>false,
-                                'msg'=>'Add Father In Law First.',
-                            ];
-                        }
-
-                    }
-                    else{
-                        return [
-                            'errMsgFlag'=>true,
-                            'msgFlag'=>false,
-                            'msg'=>'Father In Law Is Already Added.',
-                        ];
-                    }
-                }
-                else{
-                    return [
-                        'errMsgFlag'=>true,
-                        'msgFlag'=>false,
-                        'msg'=>'Please Add  Your Partner First.',
-                    ];
-                }
-            }
-            else{
-                return [
-                    'errMsgFlag'=>true,
-                    'msgFlag'=>false,
-                    'msg'=>'Please Add  Your Partner First.',
-                ];
-            }
-        }
-        else{
-            return [
-                'errMsgFlag'=>true,
-                'msgFlag'=>false,
-                'msg'=>'Add Yourself in Family Tree  First.',
-            ];
-        }
-    }
-    public function AddPaternalGrandMotherInLaw($request)
-    {
-        $currentUser=auth()->user();
-
-        $myFamilyTree=FamilyTree::where('user_id',$currentUser->id)->first();
-
-        if(!empty($myFamilyTree)) {
-
-            if(!is_null($myFamilyTree->pid)){
-                
-                $partnerInfo=FamilyTree::find($myFamilyTree->pid);
-
-                if(!empty($partnerInfo)) {
-
-                    if(!is_null($partnerInfo->fid)){
-                        
-                        $partnerFatherInfo=FamilyTree::find($partnerInfo->fid);
-
-                        if (!empty($partnerFatherInfo)) {
-                        
-                                $newUser=$this->addAsNewUser($request,$partnerFatherInfo);
-
-                                if ($newUser!=false) {
-                                    
-                                    $parentalGrandMotherInLawInfo=$this->addAsNewFamilyTree($request,$newUser);
-
-                                    if ($parentalGrandMotherInLawInfo!=false) {
-
-                                        $partnerFatherInfo->mid=$parentalGrandMotherInLawInfo->id;
-
-                                        if($partnerFatherInfo->save()){
-
-                                            if(!is_null($partnerFatherInfo->fid))
-                                                $this->connectPartner($partnerFatherInfo->fid,$partnerFatherInfo->mid);
-
-                                             return [
-                                                'errMsgFlag'=>false,
-                                                'msgFlag'=>true,
-                                                'msg'=>'Father In Law info Added Successfully.',
-                                            ];
-                                        }
-                                        else{
-                                             return [
-                                                'errMsgFlag'=>true,
-                                                'msgFlag'=>false,
-                                                'msg'=>'Failed To Add Father In Law',
-                                            ];
-                                        }
-                                    }
-                                    else{
-                                         return [
-                                            'errMsgFlag'=>true,
-                                            'msgFlag'=>false,
-                                            'msg'=>'Failed To Add Father In Law',
-                                        ];
-                                    }
-
-                                }
-                                else{
-                                    return [
-                                        'errMsgFlag'=>true,
-                                        'msgFlag'=>false,
-                                        'msg'=>'You have already added your Father In Law',
-                                    ];
-                                }
-
-                        }
-                        else{
-                            return [
-                                'errMsgFlag'=>true,
-                                'msgFlag'=>false,
-                                'msg'=>'Add Father In Law First.',
-                            ];
-                        }
-
-                    }
-                    else{
-                        return [
-                            'errMsgFlag'=>true,
-                            'msgFlag'=>false,
-                            'msg'=>'Father In Law Is Already Added.',
-                        ];
-                    }
-                }
-                else{
-                    return [
-                        'errMsgFlag'=>true,
-                        'msgFlag'=>false,
-                        'msg'=>'Please Add  Your Partner First.',
-                    ];
-                }
-            }
-            else{
-                return [
-                    'errMsgFlag'=>true,
-                    'msgFlag'=>false,
-                    'msg'=>'Please Add  Your Partner First.',
-                ];
-            }
-        }
-        else{
-            return [
-                'errMsgFlag'=>true,
-                'msgFlag'=>false,
-                'msg'=>'Add Yourself in Family Tree  First.',
-            ];
-        }
-    }
     public function AddMotherInLaw($request)
     {
         $currentUser=auth()->user();
@@ -2109,7 +1818,7 @@ class FamilyTreeController extends BaseController
 
                     if(is_null($partnerInfo->mid)){
 
-                        $newUser=$this->addAsNewUser($request,$partnerInfo);
+                        $newUser=$this->addAsNewUser($request,$myFamilyTree);
 
                         if ($newUser!=false) {
                             
@@ -2120,9 +1829,6 @@ class FamilyTreeController extends BaseController
                                 $partnerInfo->mid=$motherInfo->id;
 
                                 if($partnerInfo->save()){
-
-                                    if(!is_null($partnerInfo->fid))
-                                        $this->connectPartner($partnerInfo->fid,$partnerInfo->mid);
 
                                      return [
                                         'errMsgFlag'=>false,
@@ -2162,223 +1868,6 @@ class FamilyTreeController extends BaseController
                             'errMsgFlag'=>true,
                             'msgFlag'=>false,
                             'msg'=>'Mother In Law Is Already Added.',
-                        ];
-                    }
-                }
-                else{
-                    return [
-                        'errMsgFlag'=>true,
-                        'msgFlag'=>false,
-                        'msg'=>'Please Add  Your Partner First.',
-                    ];
-                }
-            }
-            else{
-                return [
-                    'errMsgFlag'=>true,
-                    'msgFlag'=>false,
-                    'msg'=>'Please Add  Your Partner First.',
-                ];
-            }
-        }
-        else{
-            return [
-                'errMsgFlag'=>true,
-                'msgFlag'=>false,
-                'msg'=>'Add Yourself in Family Tree  First.',
-            ];
-        }
-    }
-
-    public function AddMaternalGrandFatherInLaw($request)
-    {
-        $currentUser=auth()->user();
-
-        $myFamilyTree=FamilyTree::where('user_id',$currentUser->id)->first();
-
-        if(!empty($myFamilyTree)) {
-
-            if(!is_null($myFamilyTree->pid)){
-                
-                $partnerInfo=FamilyTree::find($myFamilyTree->pid);
-
-                if(!empty($partnerInfo)) {
-
-                    if(!is_null($partnerInfo->mid)){
-                        
-                        $partnerMotherInfo=FamilyTree::find($partnerInfo->mid);
-
-                        if (!empty($partnerMotherInfo)) {
-                        
-                                $newUser=$this->addAsNewUser($request,$partnerMotherInfo);
-
-                                if ($newUser!=false) {
-                                    
-                                    $maternalGrandFatherInLawInfo=$this->addAsNewFamilyTree($request,$newUser);
-
-                                    if ($maternalGrandFatherInLawInfo!=false) {
-
-                                        $partnerMotherInfo->fid=$maternalGrandFatherInLawInfo->id;
-
-                                        if($partnerMotherInfo->save()){
-
-                                            if(!is_null($partnerMotherInfo->mid))
-                                                $this->connectPartner($partnerMotherInfo->fid,$partnerMotherInfo->mid);
-
-                                             return [
-                                                'errMsgFlag'=>false,
-                                                'msgFlag'=>true,
-                                                'msg'=>'Father In Law info Added Successfully.',
-                                            ];
-                                        }
-                                        else{
-                                             return [
-                                                'errMsgFlag'=>true,
-                                                'msgFlag'=>false,
-                                                'msg'=>'Failed To Add Father In Law',
-                                            ];
-                                        }
-                                    }
-                                    else{
-                                         return [
-                                            'errMsgFlag'=>true,
-                                            'msgFlag'=>false,
-                                            'msg'=>'Failed To Add Father In Law',
-                                        ];
-                                    }
-
-                                }
-                                else{
-                                    return [
-                                        'errMsgFlag'=>true,
-                                        'msgFlag'=>false,
-                                        'msg'=>'You have already added your Father In Law',
-                                    ];
-                                }
-
-                        }
-                        else{
-                            return [
-                                'errMsgFlag'=>true,
-                                'msgFlag'=>false,
-                                'msg'=>'Add Father In Law First.',
-                            ];
-                        }
-
-                    }
-                    else{
-                        return [
-                            'errMsgFlag'=>true,
-                            'msgFlag'=>false,
-                            'msg'=>'Father In Law Is Already Added.',
-                        ];
-                    }
-                }
-                else{
-                    return [
-                        'errMsgFlag'=>true,
-                        'msgFlag'=>false,
-                        'msg'=>'Please Add  Your Partner First.',
-                    ];
-                }
-            }
-            else{
-                return [
-                    'errMsgFlag'=>true,
-                    'msgFlag'=>false,
-                    'msg'=>'Please Add  Your Partner First.',
-                ];
-            }
-        }
-        else{
-            return [
-                'errMsgFlag'=>true,
-                'msgFlag'=>false,
-                'msg'=>'Add Yourself in Family Tree  First.',
-            ];
-        }
-    }
-    public function AddMaternalGrandMotherInLaw($request)
-    {
-        $currentUser=auth()->user();
-
-        $myFamilyTree=FamilyTree::where('user_id',$currentUser->id)->first();
-
-        if(!empty($myFamilyTree)) {
-
-            if(!is_null($myFamilyTree->pid)){
-                
-                $partnerInfo=FamilyTree::find($myFamilyTree->pid);
-
-                if(!empty($partnerInfo)) {
-
-                    if(!is_null($partnerInfo->mid)){
-                        
-                        $partnerMotherInfo=FamilyTree::find($partnerInfo->mid);
-
-                        if (!empty($partnerMotherInfo)) {
-                        
-                                $newUser=$this->addAsNewUser($request,$partnerMotherInfo);
-
-                                if ($newUser!=false) {
-                                    
-                                    $metarnalGrandMotherInLawInfo=$this->addAsNewFamilyTree($request,$newUser);
-
-                                    if ($metarnalGrandMotherInLawInfo!=false) {
-
-                                        $partnerMotherInfo->mid=$metarnalGrandMotherInLawInfo->id;
-
-                                        if($partnerMotherInfo->save()){
-
-                                            if(!is_null($partnerMotherInfo->fid))
-                                                $this->connectPartner($partnerMotherInfo->fid,$partnerMotherInfo->mid);
-
-                                             return [
-                                                'errMsgFlag'=>false,
-                                                'msgFlag'=>true,
-                                                'msg'=>'Father In Law info Added Successfully.',
-                                            ];
-                                        }
-                                        else{
-                                             return [
-                                                'errMsgFlag'=>true,
-                                                'msgFlag'=>false,
-                                                'msg'=>'Failed To Add Father In Law',
-                                            ];
-                                        }
-                                    }
-                                    else{
-                                         return [
-                                            'errMsgFlag'=>true,
-                                            'msgFlag'=>false,
-                                            'msg'=>'Failed To Add Father In Law',
-                                        ];
-                                    }
-
-                                }
-                                else{
-                                    return [
-                                        'errMsgFlag'=>true,
-                                        'msgFlag'=>false,
-                                        'msg'=>'You have already added your Father In Law',
-                                    ];
-                                }
-
-                        }
-                        else{
-                            return [
-                                'errMsgFlag'=>true,
-                                'msgFlag'=>false,
-                                'msg'=>'Add Father In Law First.',
-                            ];
-                        }
-
-                    }
-                    else{
-                        return [
-                            'errMsgFlag'=>true,
-                            'msgFlag'=>false,
-                            'msg'=>'Father In Law Is Already Added.',
                         ];
                     }
                 }
@@ -2572,21 +2061,10 @@ class FamilyTreeController extends BaseController
                 
                 if($sonInfo!=false){
                     $sonInfo=FamilyTree::find($sonInfo->id);
-
-                    if($myFamilyTree->gender=='male'){
+                    if($myFamilyTree->gender=='male')
                         $sonInfo->fid=$myFamilyTree->id;
-
-                        if(!is_null($myFamilyTree->pid))
-                            $sonInfo->mid=$myFamilyTree->pid;
-
-                    }
-                    if($myFamilyTree->gender=='female'){
-                        
+                    if($myFamilyTree->gender=='female')
                         $sonInfo->mid=$myFamilyTree->id;
-
-                        if(!is_null($myFamilyTree->pid))
-                            $sonInfo->fid=$myFamilyTree->pid;
-                    }
 
                     if($sonInfo->save()){
                         return [
@@ -2644,21 +2122,10 @@ class FamilyTreeController extends BaseController
                 
                 if($daughterInfo!=false){
                     $daughterInfo=FamilyTree::find($daughterInfo->id);
-                    
-                    if($myFamilyTree->gender=='male'){
+                    if($myFamilyTree->gender=='male')
                         $daughterInfo->fid=$myFamilyTree->id;
-
-                        if(!is_null($myFamilyTree->pid))
-                            $daughterInfo->mid=$myFamilyTree->pid;
-
-                    }
-                    if($myFamilyTree->gender=='female'){
-                        
+                    if($myFamilyTree->gender=='female')
                         $daughterInfo->mid=$myFamilyTree->id;
-
-                        if(!is_null($myFamilyTree->pid))
-                            $daughterInfo->fid=$myFamilyTree->pid;
-                    }
 
                     if($daughterInfo->save()){
                         return [
@@ -2906,18 +2373,11 @@ class FamilyTreeController extends BaseController
                         
                     $grandChildInfo=FamilyTree::find($newFamilyTree->id);
                     
-
-                    if($childInfo->gender=='male'){
+                    if($childInfo->gender=='male')
                         $grandChildInfo->fid=$childInfo->id;
-                        if(!is_null($childInfo->mid))
-                            $grandChildInfo->mid=$childInfo->pid;
-                    }
 
-                    if($childInfo->gender=='female'){
+                    if($childInfo->gender=='female')
                         $grandChildInfo->mid=$childInfo->id;
-                        if(!is_null($childInfo->mid))
-                            $grandChildInfo->fid=$childInfo->pid;
-                    }
 
                     if($grandChildInfo->save()){
                         return [
@@ -2990,17 +2450,11 @@ class FamilyTreeController extends BaseController
                         
                     $grandChildInfo=FamilyTree::find($newFamilyTree->id);
                     
-                    if($childInfo->gender=='male'){
+                    if($childInfo->gender=='male')
                         $grandChildInfo->fid=$childInfo->id;
-                        if(!is_null($childInfo->mid))
-                            $grandChildInfo->mid=$childInfo->pid;
-                    }
 
-                    if($childInfo->gender=='female'){
+                    if($childInfo->gender=='female')
                         $grandChildInfo->mid=$childInfo->id;
-                        if(!is_null($childInfo->mid))
-                            $grandChildInfo->fid=$childInfo->pid;
-                    }
 
                     if($grandChildInfo->save()){
                         return [
@@ -3068,7 +2522,7 @@ class FamilyTreeController extends BaseController
 
                     if(!is_null($partnerInfo->fid) || !is_null($partnerInfo->mid)){
 
-                        $newUser=$this->addAsNewUser($request,$partnerInfo);
+                        $newUser=$this->addAsNewUser($request,$myFamilyTree);
 
                         if ($newUser!=false) {
                             
@@ -3168,7 +2622,7 @@ class FamilyTreeController extends BaseController
 
                     if(!is_null($partnerInfo->fid) || !is_null($partnerInfo->mid)){
 
-                        $newUser=$this->addAsNewUser($request,$partnerInfo);
+                        $newUser=$this->addAsNewUser($request,$myFamilyTree);
 
                         if ($newUser!=false) {
                             
@@ -3250,20 +2704,5 @@ class FamilyTreeController extends BaseController
                 'msg'=>'Add Yourself in Family Tree  First.',
             ];
         }
-    }
-    public function connectPartner($husbandId,$wifeId)
-    {
-        $husbandInfo=FamilyTree::find($husbandId);
-        
-        $wifeInfo=FamilyTree::find($wifeId);
-
-        $husbandInfo->pid=$wifeInfo->id;
-
-        $wifeInfo->pid=$husbandInfo->id;
-
-        if($husbandInfo->save() && $wifeInfo->save())
-            return true;
-        else
-            return false;
     }
 }
