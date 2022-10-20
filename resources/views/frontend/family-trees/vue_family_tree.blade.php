@@ -199,7 +199,7 @@
         });
     });
 
-var datepicker = $.fn.datepicker.noConflict(); 
+// var datepicker = $.fn.datepicker.noConflict(); 
     $('#relation_dob').datepicker({
         autoclose: true,
         format: 'mm/dd/yyyy'

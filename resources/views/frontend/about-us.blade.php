@@ -10,19 +10,21 @@
     <h1>About Us</h1>
 </div><!--subpage_banner-->
 
-<div class="content_area">
-    <div class="company_info">
-        <div class="company_info_iner">
-            <h2>Company story</h2>
-			<p>Thanks for checking us out. The idea for StoreeTree started 30 years ago when I took a VHS video camera to
-interview my 93 year old Grandmother. She lived an amazing life – born in Europe, fled with her
-husband and 18 month old son to the USA at the start of WWll to live the American Dream. And, with
-lots of hard work, they DID.”</p>
-            <p> She was a unique, spunky, great lady. I remember, every time I saw her I would first ask... </p>
-<div class="common_btn gap_btn_2">
-    <a onclick="companyStoryModal()" href="#"   data-toggle="modal" data-target="#companyStoryModal" >Read More</a>
-</div>
-                <span id="dots"></span><span id="more">
+<div class="charity_section" style="background-color: #fff !important;">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="charity_content">
+                        <h2>Company story</h2>
+                        <p>StoreeTree is an awesome step by step video platform to capture and share your amazing life memories
+and stories. We’re passionate about connecting families, friends and generations to come – your stories
+in your words, voice and tone. We believe heritage grounds up and at StoreeTree, MEMORIES LIVE
+HERE! Join now and start sharing your story today.</p>
+<p></p>
+<p>She was a unique, spunky, great lady. I remember, every time I saw her I first ask – how are you
+grandma? She always answered the same: “Of course I am fine – I have a roof over my head, I eat 3
+meals a day, and the people I love, still remember me.”</p>
+                        <span id="dots"></span><span id="more">
                             <p>Heroes Welcome, a subgroup of the HFN, orchestrates an inspiring welcome for these heroes as they get off the plane in DC. In some cases, they can arrange for a similar welcome for their return flight too.  </p>
                             <p>The primary focus of HFN is on veterans with terminal illnesses, especially WWII veterans. As time progresses, the focus will shift to veterans of Korea, then Vietnam, and so on. In the 46 states participating, there are anywhere from one to nine airport “hubs”, where these flights are scheduled.</p>
 
@@ -34,11 +36,20 @@ lots of hard work, they DID.”</p>
                             <h3>Give Kids the World Village</h3>
                             <p>Give Kids The World Village is an 89-acre nonprofit resort in Kissimmee, Florida that provides critically ill children and their families with week-long wish vacations at no cost. More than 30,000 children in the U.S. are diagnosed with a critical illness each year, and half of the children eligible for a wish choose to visit Central Florida and its theme parks.  The Give Kids the World Village helps these children have a place to stay while their wish is being fulfilled. </p>
 
-                            
+                    </div>
+                    <div class="common_btn gap_btn_2"><a onclick="companyStoryModal()" href="#" id="myBtn"  data-toggle="modal" data-target="#companyStoryModal" >Read More</a></div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <div class="block_photo_single">
+                        <img src="{{ URL::to('/') }}/images/frontend/about_company.jpg" alt=""/>
+                    </div><!--block_photo_single-->
+                </div>
+            </div>
+        </div>
+    </div><!--charity_section-->
 
-        </div><!-- end company_info_iner-->
 
-    </div><!-- end company_info-->
+    
     <div class="common_section story_section">
         <div class="container-fluid">
             <div class="row padding_18">
@@ -102,7 +113,7 @@ lots of hard work, they DID.”</p>
         </div>
     </div><!--charity_section-->
     
-	<div class="testimonial_section" style="background-image:url({{ URL::to('/') }}/images/frontend/slider_photo.jpg)">
+    <div class="testimonial_section" style="background-image:url({{ URL::to('/') }}/images/frontend/slider_photo.jpg)">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
@@ -131,7 +142,7 @@ lots of hard work, they DID.”</p>
             </div>
         </div>
     </div><!--testimonial_section-->
-	
+    
 </div><!--content-->
 
 
